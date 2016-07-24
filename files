@@ -51,17 +51,18 @@ void clearingAFile (){
 }
 void readFile (){
     fstream read;
-    string address, line;
+    string address;
     int numberOfLines = 0;
     
-//    cout << "Enter address of file:" << endl;
-//    cin >> address;
+    cout << "Enter address of file:" << endl;
+    cin >> address;
 //////////////// adding to a file -> fstream::app ///////////////////////////////////    
-    read.open("example.txt", fstream::in | fstream::out | fstream::app);
+    read.open(address.c_str(), fstream::in | fstream::out | fstream::app);
     if(read.is_open()){
         cout << "add something" << endl;
-        cin >> line;
-        //getline(cin, line);
+        //cin >> line;
+        string line;
+        getline(cin, line);/////something is seriosly wrong here :((((
         read << line << endl;
         read.close();
         /*
