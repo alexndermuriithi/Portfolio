@@ -1,12 +1,86 @@
 #include <iostream>
-#include <ifstream>
-#include <ofstreamm>
+#include <fstream>
+#include <string>
+//#include <vector>
 
-using namespace std
+using namespace std;
 
+void singleLineEntry (){
+        ofstream myfile ("example.txt"); // this is how you create a new file
+//        myfile << "this is a new file" << endl;
+        cout << "add something to the file" << endl;
+        string text;
+        getline(cin, text); // getline is used to capture sentances.
+//        cin.ignore(); // only reqired if cin and getline() are used sequentially
+        myfile << text << endl;
+        myfile.close();
+        cout << "///////////////// end of single line entry ////////////////" << endl;
+}
+void multiLineEntry (){
+ //       vector<string> store;
+        cout << "write something type 'stop' to end" << endl;
+        string content;
+        ofstream myfile1 ("example1.txt");
+        
+        while(content != "stop"){
+            getline(cin, content);
+     //       myfile1.open ("example1.txt");
+            myfile1 << content << endl;
+        //    getline(cin, content);
+        //    if(!content.empty()){ store.push_back(content);}
+        }
+        myfile1.close();
+        cout << "/////////////////// end of multi line entry /////////////////" << endl;
+//        vector<string>:: iterator it;        
+//        for(it=store.begin(); it!=store.end(); it++){ 
+//            myfile1 << *it;
+//            cout << *it;
+//        }
+        
+}
+void clearingAFile (){
+    ofstream openfile;
+    openfile.open ("example.txt");
+    openfile << "" << endl;
+    openfile.close();
+    
+    ofstream openfile1;
+    openfile1.open ("example1.txt");
+    openfile1 << "" << endl;
+    openfile1.close();
+}
+void readFile (){
+    fstream read;
+    string address, line;
+    int numberOfLines = 0;
+    
+//    cout << "Enter address of file:" << endl;
+//    cin >> address;
+//////////////// adding to a file -> fstream::app ///////////////////////////////////    
+    read.open("example.txt", fstream::in | fstream::out | fstream::app);
+    if(read.is_open()){
+        cout << "add something" << endl;
+        cin >> line;
+        //getline(cin, line);
+        read << line << endl;
+        read.close();
+        /*
+        while(!read.eof()){
+            getline(read, line);
+            cout << line << endl;
+            numberOfLines++;
+        }
+        */
+    }else{
+        cout << "The address you entered does not exist" << endl;
+    }
+//    cout << numberOfLines << endl;
+}
 int main (){
-	ofstreamm myfile ("example.txt");
-	myfile << "this is a new file" << endl;
-	myfile.close();
-	return 0;
+//    singleLineEntry();
+//    multiLineEntry();
+//    clearingAFile();
+    readFile();
+    
+    return 0;
 }
