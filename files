@@ -1,0 +1,12 @@
+#include <iostream>
+#include <ifstream>
+#include <ofstreamm>
+
+using namespace std
+
+int main (){
+	ofstreamm myfile ("example.txt");
+	myfile << "this is a new file" << endl;
+	myfile.close();
+	return 0;
+}
