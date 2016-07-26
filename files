@@ -1,87 +1,139 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-//#include <vector>
 
 using namespace std;
 
+int interface ();//forward declaration aka prototyping
+
 void singleLineEntry (){
-        ofstream myfile ("example.txt"); // this is how you create a new file
-//        myfile << "this is a new file" << endl;
-        cout << "add something to the file" << endl;
-        string text;
-        getline(cin, text); // getline is used to capture sentances.
-//        cin.ignore(); // only reqired if cin and getline() are used sequentially
-        myfile << text << endl;
-        myfile.close();
-        cout << "///////////////// end of single line entry ////////////////" << endl;
+    ofstream file ("example.txt"); // this is how you create a new file
+    cout << "add something to the file" << endl;
+    string text;
+    getline(cin, text); // getline is used to capture sentances.
+    cin.ignore(); // only reqired if cin and getline() are used sequentially
+    file << text << endl;
+    file.close();
+    interface();
 }
 void multiLineEntry (){
- //       vector<string> store;
-        cout << "write something type 'stop' to end" << endl;
-        string content;
-        ofstream myfile1 ("example1.txt");
-        
-        while(content != "stop"){
-            getline(cin, content);
-     //       myfile1.open ("example1.txt");
-            myfile1 << content << endl;
-        //    getline(cin, content);
-        //    if(!content.empty()){ store.push_back(content);}
-        }
-        myfile1.close();
-        cout << "/////////////////// end of multi line entry /////////////////" << endl;
-//        vector<string>:: iterator it;        
-//        for(it=store.begin(); it!=store.end(); it++){ 
-//            myfile1 << *it;
-//            cout << *it;
-//        }
-        
-}
-void clearingAFile (){
-    ofstream openfile;
-    openfile.open ("example.txt");
-    openfile << "" << endl;
-    openfile.close();
-    
-    ofstream openfile1;
-    openfile1.open ("example1.txt");
-    openfile1 << "" << endl;
-    openfile1.close();
-}
-void readFile (){
-    fstream read;
-    string address;
-    int numberOfLines = 0;
+    ofstream file;
+    string content, address;
     
     cout << "Enter address of file:" << endl;
     cin >> address;
-//////////////// adding to a file -> fstream::app ///////////////////////////////////    
-    read.open(address.c_str(), fstream::in | fstream::out | fstream::app);
-    if(read.is_open()){
-        cout << "add something" << endl;
-        //cin >> line;
-        string line;
-        getline(cin, line);/////something is seriosly wrong here :((((
-        read << line << endl;
-        read.close();
-        /*
-        while(!read.eof()){
-            getline(read, line);
-            cout << line << endl;
-            numberOfLines++;
+    cin.ignore();
+    file.open (address.c_str(), fstream::out | fstream::app);
+    
+    if(file.is_open()){
+        cout << "Write something press space to end input" << endl;
+        while(content != " "){
+            getline(cin, content);
+            file << content << endl;
         }
-        */
+        file.close();
+    }else{
+        cout << "File does not exist" << endl;
+    }
+    interface();
+}
+void clearingAFile (){
+    ofstream file;
+    string address;
+    
+    cout << "Enter address of file:" << endl;
+    cin >> address;
+    
+    file.open (address.c_str(), fstream::trunc | fstream::out);
+    if(file.is_open()){
+        file << "";
+        file.close();        
+    }else{
+        cout << "The addess you entered does not exist" << endl;
+    }
+    interface();
+}
+void addToFile (){ 
+    ofstream file;
+    string address, line;
+    
+    cout << "Enter address of file:" << endl;
+    cin >> address;
+    cin.ignore();
+//////////////// adding to a file -> fstream::app ///////////////////////////////////    
+    file.open(address.c_str(), fstream::out | fstream::app);
+    if(file.is_open()){
+        cout << "Add content to file" << endl;
+        getline(cin, line);
+        file << line << endl;
+        file.close();
     }else{
         cout << "The address you entered does not exist" << endl;
     }
-//    cout << numberOfLines << endl;
+    interface();
+}
+void printFile (){
+    string line, address;
+    int numberOfLines = 0;
+    
+    cout << "Enter address" << endl;
+    cin >> address;
+    cin.ignore();
+    ifstream myfile (address.c_str());
+    if (myfile.is_open())
+    {
+        cout << endl;
+        while ( getline (myfile,line) )
+        {
+            cout << line << endl;
+            numberOfLines++;
+        }
+        cout << endl << "This file has " << numberOfLines << " lines" << endl;
+        myfile.close();
+    }else{ 
+        cout << "Unable to open file - file does not exist" << endl; 
+    }    
+    interface();
+}
+int interface (){
+    int a;
+    cout << "Welcome to Alex's Text Editor (ATE)" << endl
+        << "What would you like to do? " << endl
+        << "1. Single line input" << endl
+        << "2. Multiline input" << endl
+        << "3. Clear file contents" << endl
+        << "4. Add to a file" << endl
+        << "5. Print file contents" << endl
+        << "6. Close ATE" << endl;
+    cin >> a;
+    cin.ignore();
+    switch (a){
+        case 1:
+            singleLineEntry();
+            break;
+        case 2:
+            multiLineEntry();
+            break;
+        case 3:
+            clearingAFile();
+            break;
+        case 4:
+            addToFile();
+            break;
+        case 5:
+            printFile();
+            break;
+        case 6:
+            return 0;
+            break;
+        default:
+            cout << "Please enter a valid input." << endl;
+            interface();
+            break;
+    }
+    return 0;
 }
 int main (){
-//    singleLineEntry();
-//    multiLineEntry();
-//    clearingAFile();
-    readFile();
-    
+    interface();
     return 0;
 }
